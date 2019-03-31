@@ -1,0 +1,106 @@
+package DengluJieMian;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+
+
+import AWARD.Menu;
+import AWARD.MenuDAO;
+import AWARD.MenuDAOlmpl;
+
+
+public class MainFrame3 extends JFrame{
+	//private Users users = null;
+	/*菜单*/
+	private JMenuBar menuBar = null;
+	private JMenu menuHelp = null;
+	private JMenuItem itemAbout = null;
+	private JMenuItem itemContent = null;
+	
+	private JPanel panelBody = null;
+	private JToolBar toolBar = null;
+	private JLabel labelName = null;
+	private JLabel labelText = null;
+	private JButton buttonExit = null;
+	private JButton buttonBack = null;
+	private JPanel panelWelcome = null;
+	
+	private JLabel labelState = null;
+	
+	private void createMenu() {
+		MenuDAO dao = new MenuDAOlmpl();
+		String sql1 ="select * from menu where menuId like '__'";
+		 List<Menu> list1 = dao.queryBysql(sql1);
+		 for (Menu temp1 : list1) {
+			JMenu menutemp = new JMenu();
+			//menutemp.setActionCommand(temp1.getMenuId());//菜单的ID
+			menutemp.setText(temp1.getMenuName());//菜单的名字
+			menutemp.setToolTipText(temp1.getMenuMemo());//菜单的提示
+			String sql2 = "select * from menu where menuId like '" + temp1.getMenuId() + "__'";
+			List<Menu> list2 = dao.queryBysql(sql2);
+			for (Menu temp2 : list2) {
+				JMenuItem itemTemp = new JMenuItem();
+				itemTemp.setActionCommand(temp2.getMenuId());
+				itemTemp.setText(temp2.getMenuName());
+				itemTemp.setToolTipText(temp2.getMenuMemo());
+				itemTemp.addActionListener(new AWARD.MenuListener(temp2, this));
+				menutemp.add(itemTemp);
+			}
+			
+			this.menuBar.add(menutemp);
+		}
+	}
+	
+	private void init() {
+		System.out.println("ss");
+		this.menuBar = new JMenuBar();
+		this.menuHelp = new JMenu("帮助");
+		this.itemAbout = new JMenuItem("关于");
+		this.itemContent = new JMenuItem("内容");
+		this.menuHelp.add(this.itemAbout);
+		this.menuHelp.add(this.itemContent);
+		this.createMenu();
+		this.menuBar.add(this.menuHelp);
+		this.setJMenuBar(this.menuBar);
+		this.panelBody = (JPanel) this.getContentPane();
+		this.panelBody.setLayout(new BorderLayout());
+		
+		this.toolBar = new JToolBar();//toolBar默认居右的布局管理器
+		this.toolBar.setFloatable(false);
+		this.toolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
+		this.labelName = new JLabel("欢迎进入管理界面：");//标签
+		//this.labelText = new JLabel(this.users.getUserName());
+		this.toolBar.add(this.labelName);
+		//this.toolBar.add(this.labelText);
+		this.panelBody.add(this.toolBar, BorderLayout.NORTH);
+		this.panelWelcome = new JPanel();
+		this.panelWelcome.setBackground(new Color(191, 230, 129));
+		this.panelWelcome.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(045, 105, 064)));//设置边框
+		this.panelBody.add(this.panelWelcome, BorderLayout.CENTER);
+		
+		this.labelState = new JLabel("某景点门票销售管理系统");
+		this.labelState.setHorizontalAlignment(JLabel.CENTER); //setHorizontalAlignment水平
+		this.panelBody.add(this.labelState, BorderLayout.SOUTH);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("景点销售管理系统主界面");
+		this.panelBody.setBounds(200, 300, 600, 400);
+		this.panelBody.setVisible(true);
+	}
+
+	public MainFrame3() {
+		this.init();
+	}
+	
+}
