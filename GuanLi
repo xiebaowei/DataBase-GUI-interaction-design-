@@ -1,0 +1,83 @@
+package Menu;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+public class GuanLi extends JFrame{
+
+	
+	JFrame gameFrame = new JFrame();
+	
+	class XS implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+		JOptionPane.showMessageDialog(null, "将进入销售管理界面！");
+		new XiaoShou();
+		setVisible(false);
+		}
+	
+     }
+	class PJ implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+		JOptionPane.showMessageDialog(null, "将进入票价管理界面！");
+		new XiaoShou();
+		setVisible(false);
+		}
+	
+     }
+	class YYY implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+		JOptionPane.showMessageDialog(null, "将进入营业员管理界面！");
+		new XiaoShou();
+		setVisible(false);
+		}
+	
+     }
+	class TP implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+		JOptionPane.showMessageDialog(null, "将进入退票管理界面！");
+		new XiaoShou();
+		setVisible(false);
+		}
+	
+     }
+	public GuanLi(){
+		super();
+		this.setResizable(false);
+		this.setSize(800, 600);
+		this.setTitle("某景点门票销售管理系统");
+		this.setLayout(null);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setLocation(300, 200);
+		this.setVisible(true);
+		JButton b1 =new JButton("销售管理");
+	    JButton b2 =new JButton("票价管理");
+	    JButton b3 =new JButton("业务员管理");
+	    JButton b4 =new JButton("退票管理");
+	    gameFrame.add(b1);
+		gameFrame.add(b2);
+		gameFrame.add(b3);
+		gameFrame.add(b4);
+		this.getContentPane().add(b1, null);
+		this.getContentPane().add(b2, null);
+		this.getContentPane().add(b3, null);
+		this.getContentPane().add(b4, null);
+		b1.setBounds(new Rectangle(0, 0, 150, 40));
+		b2.setBounds(new Rectangle(150, 0, 150, 40));
+		b3.setBounds(new Rectangle(300, 0, 150, 40));
+		b4.setBounds(new Rectangle(450, 0, 150, 40));
+		b1.addActionListener(new XS());//给按钮加事件监听器
+		b2.addActionListener(new PJ());
+		b3.addActionListener(new YYY());
+		b4.addActionListener(new TP());
+		}
+		public static void main(String[] args) {
+		new GuanLi();
+		}
+}
