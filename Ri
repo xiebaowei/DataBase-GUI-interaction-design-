@@ -1,0 +1,214 @@
+package AWARD;
+
+
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.ImageObserver;
+import java.text.AttributedCharacterIterator;
+import java.util.Date;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JViewport;
+
+
+public class Ri implements FunctionAction{
+	private JTextField comboBoxFrom = null;
+	private JTextField comboBoxFrom1 = null;
+	private JTextField IdField = null;
+	private JTextField ageField = null;
+	private JTextField rqField = null;
+	private JTextField ttField = null;
+	private JTextField ttacountfield = null;
+	private JTextField shengyuField = null;
+	private JTextField zzField = null;
+	private JTextField zjField = null;
+	private JTextField cxField = null;
+	int xh1;
+	int cr1;
+	int lr1;
+	int tt1;
+	@Override
+	public void execute(JPanel panelWork) {
+		panelWork.removeAll();
+		panelWork.repaint();
+		panelWork.setLayout(new BorderLayout());	
+		JTabbedPane tabbedPane = new JTabbedPane();	
+		JPanel body = new JPanel();
+		body.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.BOTH;
+		JLabel Label = new JLabel("日销售界面");
+		Font font11 = new Font("日销售界面:", Font.BOLD, 18);
+		Label.setFont(font11);
+		body.add(Label,gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.fill = GridBagConstraints.BOTH;
+		JLabel IdLabel = new JLabel("老人票数量：");
+		body.add(IdLabel,gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		IdField = new JTextField(10);
+		IdField.setEditable(false);
+		body.add(IdField,gbc);
+		
+		
+		gbc.gridx = 2;
+		gbc.gridy = 1;
+		gbc.fill = GridBagConstraints.BOTH;
+		JLabel lxLabel = new JLabel("老人票总价：");
+		body.add(lxLabel,gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 1;
+		this.comboBoxFrom = new JTextField(10);
+		comboBoxFrom.setEditable(false);
+		body.add(comboBoxFrom, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		JLabel jgLabel = new JLabel("小孩票数量：");
+		body.add(jgLabel,gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		this.comboBoxFrom1 =new JTextField(10);
+		comboBoxFrom1.setEditable(false);
+		body.add(comboBoxFrom1, gbc);
+		gbc.gridx = 2;
+		gbc.gridy = 2;
+		JLabel spLabel = new JLabel("小孩票总价");
+		body.add(spLabel,gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 2;
+		ageField = new JTextField(20);
+		ageField.setEditable(false);
+		body.add(ageField,gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		JLabel teacherdutyLabel = new JLabel("成人票数量：");
+		body.add(teacherdutyLabel,gbc);
+		this.rqField= new JTextField(10);
+		rqField.setEditable(false);
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		body.add(rqField, gbc);
+		
+		gbc.gridx = 2;
+		gbc.gridy = 3;
+		JLabel shengyuLabel = new JLabel("成人票总价：");
+		body.add(shengyuLabel,gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 3;
+		shengyuField = new JTextField(20);
+		shengyuField.setEditable(false);
+		body.add(shengyuField,gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 4;
+		JLabel ttlabel = new JLabel("团体票数量：");
+		body.add(ttlabel,gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 4;
+		this.ttField= new JTextField(10);
+		ttField.setEditable(false);
+		body.add(ttField,gbc);
+		gbc.gridx = 2;
+		gbc.gridy = 4;
+		JLabel ttacountLabel = new JLabel("团体票总价：");
+		body.add(ttacountLabel,gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 4;
+		ttacountfield = new JTextField(20);
+		ttacountfield.setEditable(false);
+		body.add(ttacountfield,gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 5;
+		JLabel zzlable = new JLabel("总票数：");
+		body.add(zzlable,gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 5;
+		this.zzField= new JTextField(10);
+		zzField.setEditable(false);
+		body.add(zzField,gbc);
+		gbc.gridx = 2;
+		gbc.gridy = 5;
+		JLabel zjacountLabel = new JLabel("总价");
+		body.add(zjacountLabel,gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 5;
+		zjField = new JTextField(20);
+		zjField.setEditable(false);
+		body.add(zjField,gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 6;
+		JButton b1 = new JButton("确定");
+		body.add(b1,gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 6;
+		cxField= new JTextField(10);
+		body.add(cxField,gbc);
+		b1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				shoupiaoDAO dao = new shoupiaoDAOImpl();
+				shoupiaoDAO dao1 = new shoupiaoDAOImpl();
+				shoupiaoDAO dao2 = new shoupiaoDAOImpl();
+				shoupiaoDAO dao3 = new shoupiaoDAOImpl();
+				
+				shoupiaoDAO dao5 = new shoupiaoDAOImpl();
+				shoupiaoDAO dao6 = new shoupiaoDAOImpl();
+				shoupiaoDAO dao7 = new shoupiaoDAOImpl();
+				shoupiaoDAO dao8 = new shoupiaoDAOImpl();
+				String xioahi = "小孩票"; 
+				String cr = "成人票";
+				String lr = "老年票"; 
+				String tt = "团体票"; 
+				IdField.setText(String.valueOf(dao2.findcount(cxField.getText(), lr)));
+				comboBoxFrom1.setText(String.valueOf(dao.findcount(cxField.getText(), xioahi)));
+				rqField.setText(String.valueOf(dao1.findcount(cxField.getText(), cr)));
+				ttField.setText(String.valueOf(dao3.findcount(cxField.getText(), tt)));
+				
+				
+				zzField.setText(Integer.toString(dao2.findcount(cxField.getText(), lr)+dao.findcount(cxField.getText(), xioahi)
+						+dao1.findcount(cxField.getText(), cr)+dao3.findcount(cxField.getText(), tt)));
+				ageField.setText(String.valueOf(dao5.findcountmoney(cxField.getText(), xioahi)));
+				comboBoxFrom.setText(String.valueOf(dao6.findcountmoney(cxField.getText(), lr)));
+				shengyuField.setText(String.valueOf(dao7.findcountmoney(cxField.getText(), cr)));
+				ttacountfield.setText(String.valueOf(dao8.findcountmoney(cxField.getText(), tt)));
+				zjField.setText(String.valueOf(dao5.findcountmoney(cxField.getText(), xioahi)+dao6.findcountmoney(cxField.getText(), lr)+
+						dao7.findcountmoney(cxField.getText(), cr)+	dao8.findcountmoney(cxField.getText(), tt)));
+				}
+			});
+		body.repaint();
+		tabbedPane.addTab("", body);
+		panelWork.add(tabbedPane,BorderLayout.CENTER);
+	}
+
+
+}
+
+
+
