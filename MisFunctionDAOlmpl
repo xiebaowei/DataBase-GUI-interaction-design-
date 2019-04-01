@@ -1,0 +1,60 @@
+package AWARD;
+
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import DButil.DButil;
+
+
+public class MisFunctionDAOlmpl implements MisfunctionDAO {
+
+	public List<MisFunction> findByMenuId(String menuId) {
+		List<MisFunction> list = new ArrayList<MisFunction>();
+		DButil dButil = new DButil();
+		String sql = "select * from misFunction where menuId = '"+menuId+"'";
+		ResultSet rs = dButil.query(sql);
+		try {
+			while (rs.next()) {
+				MisFunction misFunction = new MisFunction();
+				misFunction .setFunctionId(rs.getString(1));
+				misFunction.setFunctionName(rs.getString(2));
+				misFunction.setFunctionMemo(rs.getString(3));
+				misFunction.setMenuId(rs.getString(4));
+				list.add(misFunction);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			dButil.close();
+		}
+		
+		return list;
+	}
+
+	@Override
+	public MisFunction findByFunctionId(String functionId) {
+		MisFunction misFunction = null;
+		DButil dButil = new DButil();
+		String sql = "select * from misFunction where funCtionId = '"+ functionId +"'";
+		ResultSet rs = dButil.query(sql);
+		try {
+			while (rs.next()) {
+				misFunction = new MisFunction();
+				misFunction .setFunctionId(rs.getString(1));
+				misFunction.setFunctionName(rs.getString(2));
+				
+				misFunction.setFunctionMemo(rs.getString(3));
+				misFunction.setMenuId(rs.getString(4));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			dButil.close();
+		}
+		return misFunction;
+	}
+
+}
