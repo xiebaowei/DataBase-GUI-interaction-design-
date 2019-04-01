@@ -1,0 +1,47 @@
+package AWARD;
+
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import DButil.DButil;
+
+
+public class MenuDAOlmpl implements MenuDAO{
+
+	@Override
+	public List queryBysql(String sql) {
+		ResultSet rs = null;
+		List list = new ArrayList();
+		DButil dbUtil = new DButil();
+		rs = dbUtil.query(sql);
+		try {
+			while(rs.next()) {
+				Menu menuBean = new Menu();
+				menuBean.setMenuId(rs.getString(1));
+				menuBean.setMenuName(rs.getString(2));
+				menuBean.setMenuMemo(rs.getString(3));
+				list.add(menuBean);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	
+	}
+
+	@Override
+	public int save(Menu menu) {
+		String sql = "insert into menu(menuId, menuName,menuMemo) \r\n" + 
+				"values(20"+menu.getMenuId()+",'"+menu.getMenuName()+"','"+menu.getMenuMemo()+"')";
+		DButil dButil= new DButil();
+		int rows = dButil.update(sql);
+		return rows;
+				
+	}
+
+
+}
