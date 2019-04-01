@@ -1,0 +1,8 @@
+package AWARD;
+
+
+import javax.swing.JPanel;
+
+public interface FunctionAction {
+	public void execute(JPanel panelWork);
+}
