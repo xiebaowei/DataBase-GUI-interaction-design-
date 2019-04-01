@@ -1,0 +1,244 @@
+package AWARD;
+
+
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import DButil.DButil;
+
+
+public class YongHuDelete implements FunctionAction, ActionListener {
+	private JFrame mainFrame = null;
+	private JPanel workSpace = null;
+	private JPanel tpanel = null;
+	private JTable bodyTable = null;
+	private JPanel buttonJPanle = null;
+	private JButton deletebutton = null;
+	private JTextField Field = null;
+	private DefaultTableModel bodyTableModel = null;
+	private DefaultTableModel tableModel = null;
+	private String bodyTableColumns[] = 
+		{"用户号","用户名","用户密码","系统设置权限","票务管理权限","数据维护权限"};
+	private JTable  tableBody2 = null;
+	private JScrollPane scrollPane1 = null;
+	private String[][] bodyTableRows = null;
+	private JPanel bodyPanel = null;
+	private JScrollPane bodyScroll = null;
+	private JTabbedPane content = null;
+	private String[][] data = null;
+	public void refreshTable(String name) {//刷新页面
+		if (name != null) {
+			this.tableBody2.removeAll();
+			this.tableBody2.repaint();//重新把表格加载一
+			this.data = this.getData(name);
+			this.tableModel = new DefaultTableModel(this.data,this.bodyTableColumns);
+			this.tableBody2.setModel(this.tableModel);
+		} else {//名字为空时执行
+			this.bodyTable.removeAll();
+			this.bodyTableRows = this.getData();
+			this.bodyTableModel = 
+			new DefaultTableModel(this.bodyTableRows, this.bodyTableColumns);
+			this.bodyTable.setModel(this.bodyTableModel);
+		}
+		
+	
+	}
+	private String[][] getData(){
+		String[][] data = null;
+		DButil dButil = new DButil();
+		String sql = "select * from yonghub";
+		ResultSet rs = dButil.query(sql);
+		int n = 0;
+		try {
+			while (rs.next()) {
+				n++;
+			}
+			data =  new String[n][7];
+			rs = dButil.query(sql);
+			int i = 0;
+			while (rs.next()) {
+				data[i][0] = rs.getString(1);
+				data[i][1] = rs.getString(2);
+				data[i][2] = rs.getString(3);
+				data[i][3] = rs.getString(4);
+				data[i][4] = rs.getString(5);
+				data[i][5] = rs.getString(6);
+				i++;
+		   }
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		  }
+		return data;
+		 
+	}
+
+	private String[][] getData( String yhh){
+		YongHubDAO yonghubDAO = new YongHubDAOImpl();
+		YongHub yonghub  = yonghubDAO.findbyId(yhh);
+		if (yonghub==null) {
+			return null;
+		}
+		String[][] data = new String[1][6];
+		data[0][0] =String.valueOf(yonghub.getYhh());
+		data[0][1] =yonghub.getYhm();
+		data[0][2] = yonghub.getYhmm();
+		data[0][3] = yonghub.getXtszqx();
+		data[0][4] = yonghub.getPwglqx();
+		data[0][5] = yonghub.getSjwhqx();
+		return data;
+	}
+	private void refreshBodyTable() {
+		this.bodyTable.removeAll();
+		this.bodyTableRows = this.getData();
+		this.bodyTableModel = 
+		new DefaultTableModel(this.bodyTableRows, this.bodyTableColumns);
+		this.bodyTable.setModel(this.bodyTableModel);
+	}
+	
+	
+	
+	private void createBodyPanel() {
+		this.bodyPanel = new JPanel();
+		this.bodyPanel.setLayout(new BorderLayout());
+	
+		this.tpanel = new JPanel();
+		this.tpanel.setLayout(new BorderLayout());
+		
+		this.buttonJPanle = new JPanel();
+		this.buttonJPanle.setLayout(new FlowLayout());
+		this.Field = new JTextField(16);
+		this.buttonJPanle.add(this.Field);
+		this.deletebutton = new JButton("请输入要查询的用户");
+		this.deletebutton.setActionCommand("find");
+		this.deletebutton.addActionListener(this);
+		this.buttonJPanle.add(this.deletebutton);
+		this.tpanel.add(this.buttonJPanle,BorderLayout.NORTH);
+		this.bodyPanel.add(this.tpanel,BorderLayout.NORTH);
+		
+		
+		this.tableModel = new DefaultTableModel(this.bodyTableColumns, 1);
+		this.tableBody2 = new JTable(this.tableModel);
+		this.scrollPane1 = new JScrollPane(this.tableBody2);
+		this.tpanel.add(this.scrollPane1 ,BorderLayout.CENTER);
+		this.bodyPanel.add(this.tpanel, BorderLayout.NORTH);
+
+		this.bodyTableRows = this.getData();
+		this.bodyTableModel = new DefaultTableModel(this.bodyTableRows, this.bodyTableColumns);
+		this.bodyTable = new JTable();
+		this.bodyTable.setModel(this.bodyTableModel);
+		this.bodyScroll = new JScrollPane();
+		this.bodyScroll.getViewport().add(this.bodyTable);
+		this.bodyPanel.add(this.bodyScroll, BorderLayout.CENTER);
+
+		// 删除,刷新等操作按钮
+		JButton deleteButton = new JButton("删除");
+		deleteButton.setActionCommand("delete");
+		deleteButton.addActionListener(this);
+		JButton refreshButton = new JButton("刷新");
+		refreshButton.setActionCommand("refresh");
+		refreshButton.addActionListener(this);
+		// 存放按钮的面板
+		JPanel operatorPanel = new JPanel();
+		operatorPanel.add(deleteButton);
+		operatorPanel.add(refreshButton);
+		// 将按钮加在底部
+		this.bodyPanel.add(operatorPanel, BorderLayout.SOUTH);
+	}
+	
+	private void createContent() {
+		this.workSpace.setLayout(new BorderLayout());
+		this.workSpace.removeAll();
+		this.workSpace.repaint();
+		this.content = new JTabbedPane();
+		this.createBodyPanel();
+		this.content.addTab("删除用户信息", this.bodyPanel);
+		this.workSpace.add(this.content, BorderLayout.CENTER);
+	}
+
+	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("delete")) {
+			int selectCmount = this.bodyTable.getSelectedRowCount();
+			int selectCmount1 = this.tableBody2.getSelectedRowCount();
+			if (selectCmount > 0) {
+				int option = JOptionPane.showConfirmDialog(this.mainFrame,
+						"删除后将无法恢复,真的要删除吗?");
+				if (option == JOptionPane.OK_OPTION) {
+					int selectRows[] = this.bodyTable.getSelectedRows();
+					for (int i = 0; i < selectRows.length; i++) {
+						Object yhh = this.bodyTable.getValueAt(
+								selectRows[i], 0);}}
+//						YongHubDAO yonghubDAO = new YongHubDAOImpl();
+//						int row = yonghubDAO.delete(yhh.toString());
+//						if (row >= 1) {
+//							JOptionPane.showMessageDialog(this.mainFrame,"删除用户成功!");
+//							this.refreshBodyTable();
+//						} else {
+//							JOptionPane.showMessageDialog(this.mainFrame,"删除用户失败!");
+//						}
+//					}
+//				}}
+			else if (selectCmount1 > 0) {
+//				if (selectCmount1 > 0) {
+//					int option = JOptionPane.showConfirmDialog(this.mainFrame,
+//							"删除后将无法恢复,真的要删除吗?");
+					if (option == JOptionPane.OK_OPTION) {
+						int selectRows[] = this.tableBody2.getSelectedRows();
+						for (int i = 0; i < selectRows.length; i++) {
+							Object yhh = this.tableBody2.getValueAt(
+									selectRows[i], 0);
+							YongHubDAO yonghubDAO = new YongHubDAOImpl();
+//							int row = yonghubDAO.delete(yhh.toString());
+//							if (row >= 1) {
+//								JOptionPane.showMessageDialog(this.mainFrame,"删除用户成功!");
+//								this.refreshBodyTable();
+//							} else {
+//								JOptionPane.showMessageDialog(this.mainFrame,"删除用户失败!");
+//							}
+						}
+					}
+				} 
+			} else {
+				JOptionPane.showMessageDialog(this.mainFrame, "请选择要删除的数据!");
+				}
+		}else if (e.getActionCommand().equals("find")) {
+			String name = null;
+			name = this.Field.getText();
+			if (name.equals("")) {
+				JOptionPane.showMessageDialog(this.mainFrame, "请选择要查询的用户!");
+			} else {
+				this.data = this.getData(name);
+				if (this.data ==null) {
+					JOptionPane.showMessageDialog(this.mainFrame, "该用户不存在!");
+				}
+				this.refreshTable(name);
+			}
+			
+		}else if (e.getActionCommand().equals("refresh")) {
+			this.refreshBodyTable();
+		}
+	}
+
+	@Override
+	public void execute(JPanel panelWork) {
+		this.workSpace = panelWork;
+		this.createContent();
+	}
+}
