@@ -1,0 +1,11 @@
+package AWARD;
+
+public interface shoupiaoDAO {
+	public int save(shoupiao sp);
+	public int update(shoupiao sp);
+	public shoupiao findbyId(String id);
+	public int findcount(String ri,String lx);
+	public int findcountmoney(String ri,String lx);
+	public int find1(String ri,String lx);
+	public int find2(String ri,String lx);
+}
