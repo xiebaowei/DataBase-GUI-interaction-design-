@@ -1,0 +1,66 @@
+package AWARD;
+
+public class YongHub {
+	private int yhh ;
+	private String yhm = null;
+	private String yhmm = null;
+	private String xtszqx = null;
+	private String pwglqx = null;
+	private String sjwhqx = null;
+	public YongHub(){
+		
+	}
+	public String toString() {
+		return "YongHub [yhh=" + yhh + ", yhm=" + yhm + ", yhmm=" + yhmm
+				+ ", xtszqx=" + xtszqx + ", pwglqx=" + pwglqx + ", sjwhqx="
+				+ sjwhqx + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + ", toString()=" + super.toString() + "]";
+	}
+	public int getYhh() {
+		return yhh;
+	}
+	public void setYhh(int yhh) {
+		this.yhh = yhh;
+	}
+	public String getYhm() {
+		return yhm;
+	}
+	public void setYhm(String yhm) {
+		this.yhm = yhm;
+	}
+	public String getYhmm() {
+		return yhmm;
+	}
+	public void setYhmm(String yhmm) {
+		this.yhmm = yhmm;
+	}
+	public String getXtszqx() {
+		return xtszqx;
+	}
+	public void setXtszqx(String xtszqx) {
+		this.xtszqx = xtszqx;
+	}
+	public String getPwglqx() {
+		return pwglqx;
+	}
+	public void setPwglqx(String pwglqx) {
+		this.pwglqx = pwglqx;
+	}
+	public String getSjwhqx() {
+		return sjwhqx;
+	}
+	public void setSjwhqx(String sjwhqx) {
+		this.sjwhqx = sjwhqx;
+	}
+	public YongHub(int yhh, String yhm, String yhmm, String xtszqx,
+			String pwglqx, String sjwhqx) {
+		super();
+		this.yhh = yhh;
+		this.yhm = yhm;
+		this.yhmm = yhmm;
+		this.xtszqx = xtszqx;
+		this.pwglqx = pwglqx;
+		this.sjwhqx = sjwhqx;
+	}
+	
+}
