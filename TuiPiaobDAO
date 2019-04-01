@@ -1,0 +1,7 @@
+package AWARD;
+
+public interface TuiPiaobDAO {
+	public int save(TuiPiaob tuipiaob);
+	public int update(TuiPiaob tuipiaob);
+	public TuiPiaob findbyId(String tpsl);
+}
