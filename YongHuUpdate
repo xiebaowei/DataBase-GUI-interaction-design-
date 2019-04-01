@@ -1,0 +1,77 @@
+package AWARD;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import DButil.DButil;
+public class YongHuUpdate implements FunctionAction,ActionListener{
+	private String[] titled = null;
+	private String[][] data = null;
+	private DefaultTableModel tableModel = null;//表格模板
+	private JTable  tableBody = null;
+	private JScrollPane scrollPane = null;
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void execute(JPanel panelWork) {
+		panelWork.removeAll();
+		panelWork.repaint();
+		panelWork.setLayout(new BorderLayout());	
+		JTabbedPane tabbedPane = new JTabbedPane();	
+		JPanel body = new JPanel();
+		body.setLayout(new BorderLayout());
+		this.data = this.getData();
+		this.titled = new String[] {"用户号","用户名","用户密码","系统设置权限","票务管理权限","数据维护权限"};
+		this.tableModel = new DefaultTableModel(this.data, this.titled);
+		this.tableBody = new JTable(this.tableModel);
+		/*表格必须结合scrollPane来用 不然不会显示表头*/
+		this.scrollPane = new JScrollPane(this.tableBody);
+		body.add(this.scrollPane,BorderLayout.NORTH);
+		body.repaint();
+		tabbedPane.addTab("修改用户", body);
+		panelWork.add(tabbedPane,BorderLayout.CENTER);
+		
+	}
+	private String[][] getData(){
+		String[][] data = null;
+		DButil dButil = new DButil();
+		String sql = "select * from yonghub";
+		ResultSet rs = dButil.query(sql);
+		int n = 0;
+		try {
+			while (rs.next()) {
+				n++;
+			}
+			data =  new String[n][9];
+			rs = dButil.query(sql);
+			int i = 0;
+			while (rs.next()) {
+				data[i][0] = rs.getString(1);
+				data[i][1] = rs.getString(2);
+				data[i][2] = rs.getString(3);
+				data[i][3] = rs.getString(4);
+				data[i][4] = rs.getString(5);
+				data[i][5] = rs.getString(6);
+				data[i][6] = rs.getString(7);
+				data[i][7] = rs.getString(8);
+				i++;
+		   }
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		  }
+		return data;
+		 
+	}
+	
+}
