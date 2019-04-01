@@ -1,0 +1,8 @@
+package AWARD;
+
+
+import java.util.List;
+public interface  MenuDAO {
+	public List queryBysql(String sql);
+	public int save(Menu menu);
+}
