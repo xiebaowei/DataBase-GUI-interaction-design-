@@ -1,0 +1,55 @@
+package AWARD;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import DButil.DButil;
+
+public class TuiPiaobDAOImpl implements TuiPiaobDAO{
+	DButil dButil = null;
+	@Override
+	public int save(TuiPiaob tuipiaob) {
+		// TODO Auto-generated method stub
+		String sql = "insert into TuiPiaob(tpbh,tpsl,splx,tprq)"
+				+ "values("+tuipiaob.getTpbh()+"','"+tuipiaob.getTpsl()+"','"+tuipiaob.getSplx()+"','"+tuipiaob.getTprq()+"',);";
+		this.dButil = new DButil();
+		int rows = dButil.update(sql);
+		return rows;
+	}
+
+	@Override
+	public int update(TuiPiaob tuipiaob) {
+		// TODO Auto-generated method stub
+		String sql = "update TuiPiaob set tprq ='"+tuipiaob.getTprq()+"',tpsl ='"+ tuipiaob.getTpsl()+"',splx ='"+tuipiaob.getSplx()+" where tpbh = '"+tuipiaob.getTpbh()+"'";
+		this.dButil = new DButil();
+		int rows = dButil.update(sql);
+		if(rows >=1) {
+			System.out.println("修改成功！");
+		} else {
+			System.out.println("修改失败！");
+		}
+		return rows;
+	}
+
+	@Override
+	public TuiPiaob findbyId(String tpsl) {
+		// TODO Auto-generated method stub
+		TuiPiaob tuipiaob1 = null;
+		this.dButil = new DButil();
+		String sql = "SELECT * FROM TuiPiaob WHERE tpsl = '" + tpsl + "'";
+		ResultSet rs = this.dButil.query(sql);
+		try {
+			while (rs.next()) {
+				tuipiaob1 = new TuiPiaob();
+				tuipiaob1.setTpbh(Integer.parseInt(rs.getString(1)));
+				tuipiaob1.setTpsl(rs.getString(2));
+				tuipiaob1.setSplx(rs.getString(3));
+				tuipiaob1.setTprq(rs.getString(4));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tuipiaob1;
+	}
+
+}
