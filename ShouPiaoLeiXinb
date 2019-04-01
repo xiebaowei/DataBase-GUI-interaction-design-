@@ -1,0 +1,43 @@
+package AWARD;
+
+public class ShouPiaoLeiXinb {
+
+	private int splxbh ;
+	private String splxmc = null;
+	private String jg = null;
+	
+	public ShouPiaoLeiXinb(){
+		
+	}
+	public String toString() {
+		return "ShouPiaoLeiXinb [splxbh=" + splxbh + ", splxmc=" + splxmc
+				+ ", jg=" + jg + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + ", toString()=" + super.toString() + "]";
+	}
+	public int getSplxbh() {
+		return splxbh;
+	}
+	public void setSplxbh(int splxbh) {
+		this.splxbh = splxbh;
+	}
+	public String getSplxmc() {
+		return splxmc;
+	}
+	public void setSplxmc(String splxmc) {
+		this.splxmc = splxmc;
+	}
+	public String getJg() {
+		return jg;
+	}
+	public void setJg(String jg) {
+		this.jg = jg;
+	}
+	public ShouPiaoLeiXinb(int splxbh, String splxmc, String jg) {
+		super();
+		this.splxbh = splxbh;
+		this.splxmc = splxmc;
+		this.jg = jg;
+	}
+	
+	
+}
