@@ -1,0 +1,57 @@
+package AWARD;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import DButil.DButil;
+
+public class ShouPiaoLeiXinbDAOImpl implements ShouPiaoLeiXinbDAO{
+	DButil dButil = null;
+
+	@Override
+	public int save(ShouPiaoLeiXinb shoupiaoleixinb) {
+		// TODO Auto-generated method stub
+		String sql = "insert into ShouPiaoLeiXinb(splxbh,splxmc,jg)"
+				+ "values("+shoupiaoleixinb.getSplxbh()+"','"+shoupiaoleixinb.getSplxmc()+"','"+"','"+shoupiaoleixinb.getJg()+"',);";
+		this.dButil = new DButil();
+		int rows = dButil.update(sql);
+		return rows;
+	}
+
+	@Override
+	public int update(ShouPiaoLeiXinb shoupiaoleixinb) {
+		// TODO Auto-generated method stub
+		String sql = "update ShouPiaoLeiXinb set splxmc ='"+shoupiaoleixinb.getSplxmc()+"',jg='"+shoupiaoleixinb.getJg()+" where dpbh = '"+shoupiaoleixinb.getSplxbh()+"'";
+		this.dButil = new DButil();
+		int rows = dButil.update(sql);
+		if(rows >=1) {
+			System.out.println("修改成功！");
+		} else {
+			System.out.println("修改失败！");
+		}
+		return rows;
+	}
+
+	@Override
+	public ShouPiaoLeiXinb findbyId(String splxsmc) {
+		// TODO Auto-generated method stub
+		ShouPiaoLeiXinb shoupiaoleixinb1 = null;
+		this.dButil = new DButil();
+		String sql = "SELECT * FROM ShouPiaoLeiXinb WHERE splxsmc = '" + splxsmc + "'";
+		ResultSet rs = this.dButil.query(sql);
+		try {
+			while (rs.next()) {
+				shoupiaoleixinb1 = new ShouPiaoLeiXinb();
+				shoupiaoleixinb1.setSplxbh(Integer.parseInt(rs.getString(1)));
+				shoupiaoleixinb1.setSplxmc(rs.getString(2));
+				shoupiaoleixinb1.setJg(rs.getString(3));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return shoupiaoleixinb1;
+	}
+	
+	
+	
+}
