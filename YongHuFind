@@ -1,0 +1,316 @@
+package AWARD;
+
+
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JViewport;
+import javax.swing.table.DefaultTableModel;
+
+import DButil.DButil;
+
+
+
+public class YongHuFind  implements FunctionAction, ActionListener {
+	private JFrame mainFrame = null;
+	private JPanel workSpace = null;
+	private JPanel tpanel = null;
+	private JTable bodyTable = null;
+	private JPanel buttonJPanle = null;
+	private JButton deletebutton = null;
+	private JTextField Field = null;
+	private DefaultTableModel bodyTableModel = null;
+	private DefaultTableModel tableModel = null;
+	private String bodyTableColumns[] = 
+		{"用户号","用户名","用户密码","系统设置权限","票务管理权限","数据维护权限"};
+	private JTable  tableBody2 = null;
+	private JScrollPane scrollPane1 = null;
+	private String[][] bodyTableRows = null;
+	private JPanel bodyPanel = null;
+	private JScrollPane bodyScroll = null;
+	private JTabbedPane content = null;
+	private String[][] data = null;
+	public void refreshTable(String name) {//刷新页面
+		if (name != null) {
+			this.tableBody2.removeAll();
+			this.tableBody2.repaint();//重新把表格加载一
+			this.data = this.getData(name);
+			this.tableModel = new DefaultTableModel(this.data,this.bodyTableColumns);
+			this.tableBody2.setModel(this.tableModel);
+		} else {//名字为空时执行
+			this.bodyTable.removeAll();
+			this.bodyTableRows = this.getData();
+			this.bodyTableModel = 
+			new DefaultTableModel(this.bodyTableRows, this.bodyTableColumns);
+			this.bodyTable.setModel(this.bodyTableModel);
+		}
+		
+	
+	}
+	private String[][] getData(){
+		String[][] data = null;
+		DButil dButil = new DButil();
+		String sql = "select * from YongHub";
+		ResultSet rs = dButil.query(sql);
+		int n = 0;
+		try {
+			while (rs.next()) {
+				n++;
+			}
+			data =  new String[n][7];
+			rs = dButil.query(sql);
+			int i = 0;
+			while (rs.next()) {
+				data[i][0] = rs.getString(1);
+				data[i][1] = rs.getString(2);
+				data[i][2] = rs.getString(3);
+				data[i][3] = rs.getString(4);
+				data[i][4] = rs.getString(5);
+				data[i][5] = rs.getString(6);
+
+				i++;
+		   }
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		  }
+		return data;
+		 
+	}
+
+	private String[][] getData( String name){
+		YongHubDAO yonghubDAO = new YongHubDAOImpl();
+		YongHub yonghub  = yonghubDAO.findbyId(name);
+		if (yonghub==null) {
+			return null;
+		}
+		String[][] data = new String[1][6];
+		data[0][0] =String.valueOf(yonghub.getYhh());
+		data[0][1] =yonghub.getYhm();
+		data[0][2] = yonghub.getYhmm();
+		data[0][3] = yonghub.getXtszqx();
+		data[0][4] = yonghub.getPwglqx();
+		data[0][5] = yonghub.getSjwhqx();
+		return data;
+	}
+	private void refreshBodyTable() {
+		this.bodyTable.removeAll();
+		this.bodyTableRows = this.getData();
+		this.bodyTableModel = 
+		new DefaultTableModel(this.bodyTableRows, this.bodyTableColumns);
+		this.bodyTable.setModel(this.bodyTableModel);
+	}
+	private void createBodyPanel() {
+		this.bodyPanel = new JPanel();
+		this.bodyPanel.setLayout(new BorderLayout());
+	
+		this.tpanel = new JPanel();
+		this.tpanel.setLayout(new BorderLayout());
+		
+		this.buttonJPanle = new JPanel();
+		this.buttonJPanle.setLayout(new FlowLayout());
+		this.Field = new JTextField(16);
+		this.buttonJPanle.add(this.Field);
+		this.deletebutton = new JButton("请输入要查询的用户");
+		this.deletebutton.setActionCommand("find");
+		this.deletebutton.addActionListener(this);
+		this.buttonJPanle.add(this.deletebutton);
+		this.tpanel.add(this.buttonJPanle,BorderLayout.NORTH);
+		this.bodyPanel.add(this.tpanel,BorderLayout.NORTH);
+		
+		
+		this.tableModel = new DefaultTableModel(this.bodyTableColumns, 1);
+		this.tableBody2 = new JTable(this.tableModel);
+		this.scrollPane1 = new JScrollPane(this.tableBody2);
+		this.tpanel.add(this.scrollPane1 ,BorderLayout.CENTER);
+		this.bodyPanel.add(this.tpanel, BorderLayout.NORTH);
+
+		this.bodyTableRows = this.getData();
+		this.bodyTableModel = new DefaultTableModel(this.bodyTableRows, this.bodyTableColumns);
+		this.bodyTable = new JTable();
+		this.bodyTable.setModel(this.bodyTableModel);
+		this.bodyScroll = new JScrollPane();
+		this.bodyScroll.getViewport().add(this.bodyTable);
+		this.bodyPanel.add(this.bodyScroll, BorderLayout.CENTER);
+		JButton deleteButton = new JButton("查看用户详细信息");
+		deleteButton.setActionCommand("xinxi");
+		deleteButton.addActionListener(this);
+		JPanel operatorPanel = new JPanel();
+		operatorPanel.add(deleteButton);
+		this.bodyPanel.add(operatorPanel, BorderLayout.SOUTH);
+	}
+	private void createContent() {
+		this.workSpace.setLayout(new BorderLayout());
+		this.workSpace.removeAll();
+		this.workSpace.repaint();
+		this.content = new JTabbedPane();
+		this.createBodyPanel();
+		this.content.addTab("查询用户信息", this.bodyPanel);
+		this.workSpace.add(this.content, BorderLayout.CENTER);
+	}
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("xinxi")) {
+			int selectCmount = this.bodyTable.getSelectedRowCount();
+			int selectCmount1 = this.tableBody2.getSelectedRowCount();
+			if (selectCmount == 1) {
+				int selectRow = this.bodyTable.getSelectedRow();
+				new OrgTypeModify(this,this.bodyTable.getValueAt(selectRow,0).toString());
+			}else if (selectCmount1 == 1) {
+				int selectRow = this.tableBody2.getSelectedRow();
+				new OrgTypeModify(this,this.tableBody2.getValueAt(selectRow,0).toString());
+			} else {
+				JOptionPane.showMessageDialog(this.mainFrame, "请选择要查询的数据!");
+				}
+		}else if (e.getActionCommand().equals("find")) {
+			String name = null;
+			name = this.Field.getText();
+			if (name.equals("")) {
+				JOptionPane.showMessageDialog(this.mainFrame, "请选择要查询的教师!");
+			} else {
+				this.data = this.getData(name);
+				if (this.data ==null) {
+					JOptionPane.showMessageDialog(this.mainFrame, "该用户不存在!");
+				}
+				this.refreshTable(name);
+
+			}
+			
+		}else if (e.getActionCommand().equals("refresh")) {
+			this.refreshBodyTable();
+		}
+	}
+	public class OrgTypeModify extends JDialog{
+		private YongHuFind yonghuFind = null;
+		private YongHub yonghub = null;
+		private JTextField IdField = null;
+		private JTextField NameField = null;
+		private JTextField xField = null;
+		private JTextField ageField = null;
+		private JTextField pwglField = null;
+		private JTextField sjwhField = null;
+		private JTextArea cfField = null;
+		
+		private void init() {
+			this.setBounds(400, 300, 800, 600);
+			Container container = this.getContentPane();
+			container.setLayout(new GridBagLayout());
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.gridx = 2;
+			gbc.gridy = 0;
+			gbc.fill = GridBagConstraints.BOTH;
+			JLabel teacherLabel = new JLabel("用户详细信息:");
+			Font font11 = new Font("用户详细信息:", Font.BOLD, 18);
+			teacherLabel.setFont(font11);
+			container.add(teacherLabel,gbc);
+			
+			gbc.gridx = 0;
+			gbc.gridy = 1;
+			gbc.fill = GridBagConstraints.BOTH;
+			JLabel yhIdLabel = new JLabel("用户号:");
+			container.add(yhIdLabel,gbc);
+			
+			gbc.gridx = 1;
+			gbc.gridy = 1;
+			IdField = new JTextField(10);
+			this.IdField.setEditable(false);
+			this.IdField.setText(String.valueOf(this.yonghub.getYhh()));
+			container.add(IdField,gbc);
+			gbc.gridx = 0;
+			gbc.gridy = 2;
+			gbc.fill = GridBagConstraints.BOTH;
+			JLabel yhNameLabel = new JLabel("用户名:");
+			container.add(yhNameLabel,gbc);
+			gbc.gridx = 1;
+			gbc.gridy = 2;
+			NameField = new JTextField(20);
+			this.NameField.setText(this.yonghub.getYhm());
+			container.add(NameField,gbc);
+			
+			gbc.gridx = 0;
+			gbc.gridy = 2;
+			JLabel yhmmLabel = new JLabel("用户密码:");
+			container.add(yhmmLabel,gbc);
+			gbc.gridx = 1;
+			gbc.gridy = 2;
+			xField = new JTextField(10);
+			this.xField.setText(this.yonghub.getYhmm());
+			container.add(xField,gbc);		
+			gbc.gridx = 0;
+			gbc.gridy = 3;
+			JLabel ageLabel = new JLabel("系统设置权限:");
+			container.add(ageLabel,gbc);
+			gbc.gridx = 1;
+			gbc.gridy = 3;
+			ageField = new JTextField(20);
+			this.ageField.setText(this.yonghub.getXtszqx());
+			container.add(ageField,gbc);
+			
+			gbc.gridx = 0;
+			gbc.gridy = 4;
+			JLabel tyLabel = new JLabel("票务管理权限:");
+			container.add(tyLabel,gbc);
+			gbc.gridx = 1;
+			gbc.gridy = 4;
+			pwglField = new JTextField(20);
+			this.pwglField.setText(this.yonghub.getPwglqx());
+			container.add(pwglField,gbc);
+				
+			
+			gbc.gridx = 0;
+			gbc.gridy = 5;
+			JLabel Label = new JLabel("数据维护权限:");
+			container.add(Label,gbc);
+			gbc.gridx = 1;
+			gbc.gridy = 5;
+			sjwhField = new JTextField(20);
+			this.sjwhField.setText(this.yonghub.getSjwhqx());
+			container.add(sjwhField,gbc);
+			
+			JScrollPane orgTypeMemoScroll1 = new JScrollPane();
+			JViewport orgTypeMemoScrollView1 = orgTypeMemoScroll1.getViewport();
+			cfField = new JTextArea(10,17);
+			this.cfField.setEditable(false);
+//			cfField.setText(this.award.getCf());
+//			orgTypeMemoScrollView1.add(teachercfField);
+			container.add(orgTypeMemoScroll1,gbc);
+			this.setVisible(true);
+		}
+		
+		public OrgTypeModify(YongHuFind yonghufind, String yhm) {
+			super(yonghufind.mainFrame, "查询用户", true);
+			this.yonghuFind = yonghufind;
+			this.yonghub = new YongHub();
+			YongHubDAO dAO = new YongHubDAOImpl();
+			this.yonghub = dAO.findbyId(yhm);
+			
+			
+
+		}	
+	}
+	public void execute(JPanel panelWork) {
+		this.workSpace = panelWork;
+		this.createContent();
+	}
+}
