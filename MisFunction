@@ -1,0 +1,37 @@
+package AWARD;
+
+
+public class MisFunction {
+	private String functionId = null;
+	private String functionName = null;
+	private String functionMemo = null;
+	private String menuId = null;
+	public String getFunctionId() {
+		return functionId;
+	}
+	public void setFunctionId(String functionId) {
+		this.functionId = functionId;
+	}
+	public String getFunctionName() {
+		return functionName;
+	}
+	public void setFunctionName(String functionName) {
+		this.functionName = functionName;
+	}
+
+	public String getFunctionMemo() {
+		return functionMemo;
+	}
+	public void setFunctionMemo(String functionMemo) {
+		this.functionMemo = functionMemo;
+	}
+	public String getMenuId() {
+		return menuId;
+	}
+	public void setMenuId(String menuId) {
+		this.menuId = menuId;
+	}
+	
+	
+
+}
