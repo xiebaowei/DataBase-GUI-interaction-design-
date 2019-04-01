@@ -1,0 +1,7 @@
+package AWARD;
+
+public interface ShouPiaoLeiXinbDAO {
+	public int save(ShouPiaoLeiXinb shoupiaoleixinb);
+	public int update(ShouPiaoLeiXinb shoupiaoleixinb);
+	public ShouPiaoLeiXinb findbyId(String splxsmc);
+}
