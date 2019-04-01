@@ -1,0 +1,107 @@
+package AWARD;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import DButil.DButil;
+
+public class acountsDAOImpl implements acountsDAO{
+	DButil dButil = null;
+	@Override
+	public int save(acounts ac) {
+		// TODO Auto-generated method stub
+		String sql = "insert into acounts(count)"
+				+ "values("+ac.getCount()+ "',);";
+		this.dButil = new DButil();
+		int rows = dButil.update(sql);
+		return rows;
+	}
+
+	@Override
+	public int update(acounts ac) {
+		// TODO Auto-generated method stub
+		String sql = "update acounts set lx ='"+ac.getCount()+"'";
+		this.dButil = new DButil();
+		int rows = dButil.update(sql);
+		if(rows >=1) {
+			System.out.println("修改成功！");
+		} else {
+			System.out.println("修改失败！");
+		}
+		return rows;
+	}
+
+	@Override
+	public acounts findbyId(String count) {
+		// TODO Auto-generated method stub
+		acounts ac1 = null;
+		this.dButil = new DButil();
+		String sql = "SELECT * FROM acounts WHERE count = '" + count + "'";
+		ResultSet rs = this.dButil.query(sql);
+		try {
+			while (rs.next()) {
+				ac1 = new acounts();
+				ac1.setCount(Integer.parseInt(rs.getString(1)));
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ac1;
+	}
+
+	@Override
+	public int acounts() {
+		//String sql2 = "update acounts set counts  = "+x+"";
+		String sql = "select counts from acounts";
+		int sum =0;
+		this.dButil = new DButil();
+		ResultSet rs = this.dButil.query(sql);
+		try {
+			while (rs.next()) {
+				
+			sum = Integer.parseInt(rs.getString(1));
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return sum;
+	}
+
+	@Override
+	public int updateacount(int x) {
+			// TODO Auto-generated method stub
+		String sql = "update acounts set counts  = "+x+"";
+			this.dButil = new DButil();
+			int rows = dButil.update(sql);
+			
+			return rows;
+	}
+
+
+public int updates(int y) {
+	// TODO Auto-generated method stub
+
+	return y;
+}
+
+@Override
+public AWARD.acounts find() {
+	acounts ac1 = null;
+	this.dButil = new DButil();
+	String sql = "SELECT * FROM acounts";
+	ResultSet rs = this.dButil.query(sql);
+	try {
+		while (rs.next()) {
+			ac1 = new acounts();
+			ac1.setCount(Integer.parseInt(rs.getString(1)));
+			
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return ac1;
+}
+
+}
