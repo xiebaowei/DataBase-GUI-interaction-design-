@@ -1,0 +1,320 @@
+package AWARD;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JViewport;
+import javax.swing.table.DefaultTableModel;
+
+import DButil.DButil;
+import Menu.YongHu;
+
+public class YongHuModfy implements FunctionAction, ActionListener {
+
+	private JFrame mainFrame = null;
+
+	private JPanel workSpace = null;
+
+	private JTable bodyTable = null;
+	
+	private DefaultTableModel bodyTableModel = null;
+	
+	private String bodyTableColumns[] = 
+		{"用户号","用户名","用户密码","系统设置权限","票务管理权限","数据维护权限"};
+	
+	private String[][] bodyTableRows = null;
+	
+	private JPanel bodyPanel = null;
+
+	private JScrollPane bodyScroll = null;
+	
+	private JTabbedPane content = null;
+	
+	private String[][] getData(){
+		String[][] data = null;
+		DButil dButil = new DButil();
+		String sql = "select * from YongHub";
+		ResultSet rs = dButil.query(sql);
+		int n = 0;
+		try {
+			while (rs.next()) {
+				n++;
+			}
+			data =  new String[n][9];
+			rs = dButil.query(sql);
+			int i = 0;
+			while (rs.next()) {
+				data[i][0] = rs.getString(1);
+				data[i][1] = rs.getString(2);
+				data[i][2] = rs.getString(3);
+				data[i][3] = rs.getString(4);
+				data[i][4] = rs.getString(5);
+				data[i][5] = rs.getString(6);
+				i++;
+		   }
+		} catch(SQLException e) {
+			
+			e.printStackTrace();
+		  }
+		return data;
+		 
+	}
+	
+	private void createBodyPanel() {
+		this.bodyPanel = new JPanel();
+		this.bodyPanel.setLayout(new BorderLayout());
+
+		this.bodyTableRows = this.getData();
+		this.bodyTableModel = new DefaultTableModel(this.bodyTableRows, this.bodyTableColumns);
+		this.bodyTable = new JTable();
+		this.bodyTable.setModel(this.bodyTableModel);
+		// 为列表加上一个滚动窗口
+		this.bodyScroll = new JScrollPane();
+		this.bodyScroll.getViewport().add(this.bodyTable);
+
+		// 将列表加到中间
+		this.bodyPanel.add(this.bodyScroll, BorderLayout.CENTER);
+
+		// 删除,刷新等操作按钮
+		JButton deleteButton = new JButton("修改");
+		deleteButton.setActionCommand("modify");
+		deleteButton.addActionListener(this);
+		JButton refreshButton = new JButton("刷新");
+		refreshButton.setActionCommand("refresh");
+		refreshButton.addActionListener(this);
+		// 存放按钮的面板
+		JPanel operatorPanel = new JPanel();
+		operatorPanel.add(deleteButton);
+		operatorPanel.add(refreshButton);
+		// 将按钮加在底部
+		this.bodyPanel.add(operatorPanel, BorderLayout.SOUTH);
+	}
+	
+	private void init() {
+		this.workSpace.setLayout(new BorderLayout());
+		this.workSpace.removeAll();
+		this.workSpace.repaint();
+		this.content = new JTabbedPane();
+		this.createBodyPanel();
+		this.content.addTab("修改用户信息", this.bodyPanel);
+		this.workSpace.add(this.content, BorderLayout.CENTER);
+	}
+	
+	private void refreshBodyTable(){
+		this.bodyTable.removeAll();
+		this.bodyTableRows = this.getData();
+		this.bodyTableModel = 
+			new DefaultTableModel(this.bodyTableRows, this.bodyTableColumns);
+		this.bodyTable.setModel(this.bodyTableModel);
+	}
+	
+
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("modify")) {
+			int selectCmount = this.bodyTable.getSelectedRowCount();
+			if (selectCmount == 1) {
+				int selectRow = this.bodyTable.getSelectedRow();
+				//new OrgTypeModify(this,this.bodyTable.getValueAt(selectRow,0).toString());
+			} else {
+				JOptionPane.showMessageDialog(this.mainFrame, "请选择一条要修改的数据!");
+				//JOptionPane.show
+			}
+		} else if(e.getActionCommand().equals("refresh")){
+			this.refreshBodyTable();
+		}
+	}
+	
+	public class OrgTypeModify extends JDialog implements ActionListener {
+		private YongHub yonghub = null;
+		private JPanel buttonJPanle = null;
+		private JButton addOrgType = null;
+		private JButton clearOrgType = null;
+		private JTextField IdField = null;
+		private JTextField NameField = null;
+		private JTextField xField = null;
+		private JTextField ageField = null;
+		private JTextField pwglField = null;
+		private JTextField sjwhField = null;
+		private YongHuModfy YongHuModfy;
+		private void init() {
+			this.setBounds(400, 300, 800, 600);
+			Container container = this.getContentPane();
+			container.setLayout(new GridBagLayout());
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.gridx = 1;
+			gbc.gridy = 0;
+			gbc.fill = GridBagConstraints.BOTH;
+			JLabel teacherLabel = new JLabel("用户信息修改:");
+			Font font11 = new Font("用户信息修改:", Font.BOLD, 18);
+			teacherLabel.setFont(font11);
+			container.add(teacherLabel,gbc);
+			
+			gbc.gridx = 0;
+			gbc.gridy = 1;
+			gbc.fill = GridBagConstraints.BOTH;
+			JLabel yhIdLabel = new JLabel("用户号:");
+			container.add(yhIdLabel,gbc);
+			
+			gbc.gridx = 1;
+			gbc.gridy = 1;
+			IdField = new JTextField(10);
+			this.IdField.setEditable(false);
+			this.IdField.setText(String.valueOf(this.yonghub.getYhh()));
+			container.add(IdField,gbc);
+			gbc.gridx = 0;
+			gbc.gridy = 2;
+			gbc.fill = GridBagConstraints.BOTH;
+			JLabel yhNameLabel = new JLabel("用户名:");
+			container.add(yhNameLabel,gbc);
+			gbc.gridx = 1;
+			gbc.gridy = 2;
+			NameField = new JTextField(20);
+			this.NameField.setText(this.yonghub.getYhm());
+			container.add(NameField,gbc);
+			
+			gbc.gridx = 0;
+			gbc.gridy = 2;
+			JLabel yhmmLabel = new JLabel("用户密码:");
+			container.add(yhmmLabel,gbc);
+			gbc.gridx = 1;
+			gbc.gridy = 2;
+			xField = new JTextField(10);
+			this.xField.setText(this.yonghub.getYhmm());
+			container.add(xField,gbc);		
+			gbc.gridx = 0;
+			gbc.gridy = 3;
+			JLabel ageLabel = new JLabel("系统设置权限:");
+			container.add(ageLabel,gbc);
+			gbc.gridx = 1;
+			gbc.gridy = 3;
+			ageField = new JTextField(20);
+			this.ageField.setText(this.yonghub.getXtszqx());
+			container.add(ageField,gbc);
+			
+			gbc.gridx = 0;
+			gbc.gridy = 4;
+			JLabel tyLabel = new JLabel("票务管理权限:");
+			container.add(tyLabel,gbc);
+			gbc.gridx = 1;
+			gbc.gridy = 4;
+			pwglField = new JTextField(20);
+			this.pwglField.setText(this.yonghub.getPwglqx());
+			container.add(pwglField,gbc);
+				
+			
+			gbc.gridx = 0;
+			gbc.gridy = 5;
+			JLabel Label = new JLabel("数据维护权限:");
+			container.add(Label,gbc);
+			gbc.gridx = 1;
+			gbc.gridy = 5;
+			sjwhField = new JTextField(20);
+			this.sjwhField.setText(this.yonghub.getSjwhqx());
+			container.add(sjwhField,gbc);
+		
+
+			this.buttonJPanle = new JPanel();
+			this.buttonJPanle.setLayout(new FlowLayout());
+			this.addOrgType = new JButton("保存");
+			this.addOrgType.setActionCommand("save");
+			this.addOrgType.addActionListener(this);
+			this.clearOrgType = new JButton("还原");
+			this.clearOrgType.setActionCommand("fade");
+			this.clearOrgType.addActionListener(this);
+			
+			this.buttonJPanle.add(this.addOrgType);
+			this.buttonJPanle.add(this.clearOrgType);
+			
+			gbc.gridx = 0;
+			gbc.gridy = 13;
+			gbc.gridwidth = 2;
+			container.add(this.buttonJPanle,gbc);
+			
+			this.setVisible(true);
+		}
+//		
+//		public OrgTypeModify(YongHuModfy yonghumodfy, String yhh) {
+//			super(yonghumodfy.mainFrame, "修改机构类别", true);
+//			this.YongHuModfy = yonghumodfy;  
+//			                             
+//			YongHubDAO YongHubDAO = new YongHubDAOImpl();
+//			this.yonghub = new YongHub();
+//			this.yonghub = YongHubDAO.findbyId(yhh);
+//			
+//			this.init();
+//		}	
+		
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equals("save")) {
+				boolean flage = this.updates();
+				if (flage == true) {
+					JOptionPane.showMessageDialog(this, " 修改用户成功");
+					this.YongHuModfy.refreshBodyTable();
+				} else {
+					JOptionPane.showMessageDialog(this, "修改用户失败,请检查数据是否正确");
+				}
+			} else if (e.getActionCommand().equals("fade")) {
+				this.fade();
+			}
+		}
+		public boolean updates() {
+			boolean flag = false;
+			YongHub yonghub = new YongHub();
+			yonghub.setYhh (Integer.parseInt(this.IdField.getText()));
+			yonghub.setYhm(NameField.getText());
+			yonghub.setYhmm(xField.getText());
+			yonghub.setXtszqx(ageField.getText());
+			yonghub.setPwglqx(pwglField.getText());
+			yonghub.setSjwhqx(sjwhField.getText());
+			
+			YongHubDAO DAO = new YongHubDAOImpl();
+			int row = DAO.update(yonghub);
+			System.out.println("row=" + row);
+			
+			if (row >= 1 ) {
+				flag = true;
+			}
+			return flag;
+		}
+		public void fade() {
+			this.IdField.setText(String.valueOf(this.yonghub.getYhh()));
+			this.NameField.setText(this.yonghub.getYhm());
+			this.xField.setText(this.yonghub.getYhmm());
+			this.ageField.setText(this.yonghub.getXtszqx());
+			this.pwglField.setText(this.yonghub.getPwglqx());
+			this.sjwhField.setText(this.yonghub.getSjwhqx());
+			
+		}		
+	}
+
+	@Override
+	public void execute(JPanel panelWork) {
+		this.workSpace = panelWork;
+		this.init();		
+	}
+
+}
+
+
