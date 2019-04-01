@@ -1,0 +1,10 @@
+package AWARD;
+
+public interface acountsDAO {
+	public int save(acounts ac);
+	public int update(acounts ac);
+	public acounts findbyId(String count);
+	public int acounts();
+	public int updateacount(int x);
+	public acounts find();
+}
