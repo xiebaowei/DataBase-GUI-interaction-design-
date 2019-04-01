@@ -1,0 +1,51 @@
+package AWARD;
+
+public class shoupiao {
+	private String id=null ;
+	private String lx = null;
+	private String jg = null;
+	private String rq = null;
+	private int sl;
+	public shoupiao(){
+		
+	}
+	@Override
+	public String toString() {
+		return "shoupiao [id=" + id + ", lx=" + lx + ", jg=" + jg + ", rq="
+				+ rq + ", sl=" + sl + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getLx() {
+		return lx;
+	}
+	public void setLx(String lx) {
+		this.lx = lx;
+	}
+	public String getJg() {
+		return jg;
+	}
+	public void setJg(String jg) {
+		this.jg = jg;
+	}
+	public String getRq() {
+		return rq;
+	}
+	public void setRq(String rq) {
+		this.rq = rq;
+	}
+	public int getSl() {
+		return sl;
+	}
+	public void setSl(int sl) {
+		this.sl = sl;
+	}
+	
+	
+}
