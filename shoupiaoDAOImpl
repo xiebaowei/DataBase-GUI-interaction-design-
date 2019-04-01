@@ -1,0 +1,144 @@
+package AWARD;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import DButil.DButil;
+
+public class shoupiaoDAOImpl implements shoupiaoDAO{
+	DButil dButil = null;
+	@Override
+	public int save(shoupiao sp) {
+		// TODO Auto-generated method stub
+		String sql = "insert into shoupiao(id,lx,jg,rq,sl)"
+				+ "values("+sp.getId()+"','"+sp.getLx()+"','"+"','"+sp.getJg()+ "','"+sp.getRq()+"','"+sp.getSl()+ "',);";
+		this.dButil = new DButil();
+		int rows = dButil.update(sql);
+		return rows;
+	}
+
+	@Override
+	public int update(shoupiao sp) {
+		// TODO Auto-generated method stub
+		String sql = "update shoupiao set lx ='"+sp.getLx()+"',jg='"+sp.getJg()+"',rq='"+sp.getRq()+"',sl='"+sp.getSl()+" where id = '"+sp.getId()+"'";
+		this.dButil = new DButil();
+		int rows = dButil.update(sql);
+		if(rows >=1) {
+			System.out.println("修改成功！");
+		} else {
+			System.out.println("修改失败！");
+		}
+		return rows;
+	}
+
+	@Override
+	public shoupiao findbyId(String id) {
+		// TODO Auto-generated method stub
+		shoupiao shoupiao1 = null;
+		this.dButil = new DButil();
+		String sql = "SELECT * FROM shoupiao WHERE id = '" + id + "'";
+		ResultSet rs = this.dButil.query(sql);
+		try {
+			while (rs.next()) {
+				shoupiao1 = new shoupiao();
+				shoupiao1.setSl(Integer.parseInt(rs.getString(1)));
+				shoupiao1.setId(rs.getString(2));
+				shoupiao1.setLx(rs.getString(3));
+				shoupiao1.setJg(rs.getString(4));
+				shoupiao1.setRq(rs.getString(5));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return shoupiao1;
+	}
+
+	@Override
+	public int findcount(String ri, String lx) {
+		int row = 0;
+		this.dButil = new DButil();
+		//String sql2 = "select sum(sl)  from shoupiao where rq like  '2019-"+ri+"-%' and lx = '"+lx+"'";
+		String sql = "select sum(sl)  from shoupiao where rq = '"+ri+"' and lx = '"+lx+"';";
+		System.out.println(sql);
+		ResultSet rs = this.dButil.query(sql);
+		try {
+			while (rs.next()) {
+				shoupiao shoupiao = new shoupiao();
+				 shoupiao.setSl(rs.getInt(1));
+				 row = shoupiao.getSl();
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return row ;
+	}
+
+	@Override
+	public int findcountmoney(String ri, String lx) {
+		int row = 0;
+		this.dButil = new DButil();
+		//ri = "2019-01-01";
+		//String sql1 = "select sum(jg)  from shoupiao where rq like  '2019-"+ri+"-%' and lx = '"+lx+"'";
+		String sql = "select sum(jg)  from shoupiao where rq = '"+ri+"' and lx = '"+lx+"';";
+		System.out.println(sql);
+		ResultSet rs = this.dButil.query(sql);
+		try {
+			while (rs.next()) {
+				shoupiao shoupiao = new shoupiao();
+				 shoupiao.setSl(rs.getInt(1));
+				 row = shoupiao.getSl();
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return row ;
+	}
+
+	@Override
+	public int find1(String ri, String lx) {
+		// TODO Auto-generated method stub
+		int row = 0;
+		this.dButil = new DButil();
+		String sql = "select sum(sl)  from shoupiao where rq like  '2019-"+ri+"-%' and lx = '"+lx+"'";
+	
+		System.out.println(sql);
+		ResultSet rs = this.dButil.query(sql);
+		try {
+			while (rs.next()) {
+				shoupiao shoupiao = new shoupiao();
+				 shoupiao.setSl(rs.getInt(1));
+				 row = shoupiao.getSl();
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return row ;
+	}
+	
+
+	@Override
+	public int find2(String ri, String lx) {
+		// TODO Auto-generated method stub
+		int row = 0;
+		this.dButil = new DButil();
+		//ri = "2019-01-01";
+		String sql = "select sum(jg)  from shoupiao where rq like  '2019-"+ri+"-%' and lx = '"+lx+"'";
+		System.out.println(sql);
+		ResultSet rs = this.dButil.query(sql);
+		try {
+			while (rs.next()) {
+				shoupiao shoupiao = new shoupiao();
+				 shoupiao.setSl(rs.getInt(1));
+				 row = shoupiao.getSl();
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return row ;
+	}
+
+}
