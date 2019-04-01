@@ -1,0 +1,63 @@
+package AWARD;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import DButil.DButil;
+
+public class YongHubDAOImpl implements YongHubDAO {
+	DButil dButil = null;
+	@Override
+	public int save(YongHub yonghub) {
+		// TODO Auto-generated method stub
+		String sql = "insert into YongHub(yhh,yhm,yhmm,xtszqx,pwglqx,sjwhqx,)"
+				+ "values("+yonghub.getYhh()+"','"+yonghub.getYhm()+"','"+yonghub.getYhmm()+"','"+yonghub.getXtszqx()+"','"+yonghub.getPwglqx()+
+				"','"+yonghub.getSjwhqx()+"',);";
+		this.dButil = new DButil();
+		int rows = dButil.update(sql);
+		return rows;
+	
+	}
+
+	@Override
+	public int update(YongHub yonghub) {
+		// TODO Auto-generated method stub
+		String sql = "update YongHub set yhm ='"+yonghub.getYhm()+"',yhmm ='"+ yonghub.getYhmm()+"',xtszqx ='"+yonghub.getXtszqx()+"',pwglqx ='"+yonghub.getPwglqx()+"',sjwhqx'"+yonghub.getSjwhqx()+"','"+" where yhh = '"+yonghub.getYhh()+"'";
+		this.dButil = new DButil();
+		int rows = dButil.update(sql);
+		if(rows >=1) {
+			System.out.println("修改成功！");
+		} else {
+			System.out.println("修改失败！");
+		}
+		return rows;
+	
+	}
+
+	@Override
+	public YongHub findbyId(String yhm) {
+		// TODO Auto-generated method stub
+		YongHub yonghub1 = null;
+		this.dButil = new DButil();
+		String sql = "SELECT * FROM YongHub WHERE yhm = '" + yhm + "'";
+		ResultSet rs = this.dButil.query(sql);
+		try {
+			while (rs.next()) {
+				yonghub1 = new YongHub();
+				yonghub1.setYhh(Integer.parseInt(rs.getString(1)));
+				yonghub1.setYhm(rs.getString(2));
+				yonghub1.setYhmm(rs.getString(3));
+				yonghub1.setXtszqx(rs.getString(4));
+				yonghub1.setPwglqx(rs.getString(5));
+				yonghub1.setSjwhqx(rs.getString(6));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return yonghub1;
+	}
+	
+	
+	
+
+}
