@@ -1,0 +1,8 @@
+package AWARD;
+
+public interface YongHubDAO {
+	public int save(YongHub yonghub);
+	public int update(YongHub yonghub);
+	public YongHub findbyId(String yhh);
+	
+}
