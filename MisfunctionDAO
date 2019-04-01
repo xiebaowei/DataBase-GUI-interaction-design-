@@ -1,0 +1,11 @@
+package AWARD;
+
+
+import java.util.List;
+
+
+public interface MisfunctionDAO {
+	public List<MisFunction> findByMenuId(String menuId); 
+	public MisFunction findByFunctionId(String functionId);
+	
+}
