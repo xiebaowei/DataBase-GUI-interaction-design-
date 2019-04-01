@@ -1,0 +1,50 @@
+package AWARD;
+
+public class TuiPiaob {
+	private int tpbh ;
+	private String tpsl = null;
+	private String splx = null;
+	private String tprq = null;
+	
+	public TuiPiaob(){
+		
+	}
+	public String toString() {
+		return "TuiPiaob [tpbh=" + tpbh + ", tpsl=" + tpsl + ", splx=" + splx
+				+ ", tprq=" + tprq + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
+	}
+	public int getTpbh() {
+		return tpbh;
+	}
+	public void setTpbh(int tpbh) {
+		this.tpbh = tpbh;
+	}
+	public String getTpsl() {
+		return tpsl;
+	}
+	public void setTpsl(String tpsl) {
+		this.tpsl = tpsl;
+	}
+	public String getSplx() {
+		return splx;
+	}
+	public void setSplx(String splx) {
+		this.splx = splx;
+	}
+	public String getTprq() {
+		return tprq;
+	}
+	public void setTprq(String tprq) {
+		this.tprq = tprq;
+	}
+	public TuiPiaob(int tpbh, String tpsl, String splx, String tprq) {
+		super();
+		this.tpbh = tpbh;
+		this.tpsl = tpsl;
+		this.splx = splx;
+		this.tprq = tprq;
+	}
+	
+}
