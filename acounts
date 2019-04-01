@@ -1,0 +1,21 @@
+package AWARD;
+
+public class acounts {
+	private int count ;
+public acounts(){
+		
+	}
+@Override
+public String toString() {
+	return "count [count=" + count + ", getClass()=" + getClass()
+			+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+			+ "]";
+}
+public int getCount() {
+	return count;
+}
+public void setCount(int count) {
+	this.count = count;
+}
+
+}
