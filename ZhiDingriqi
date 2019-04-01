@@ -1,0 +1,202 @@
+package AWARD;
+
+
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.ImageObserver;
+import java.text.AttributedCharacterIterator;
+import java.util.Date;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JViewport;
+
+
+public class ZhiDingriqi implements FunctionAction{
+	private JTextField comboBoxFrom = null;
+	private JTextField comboBoxFrom1 = null;
+	private JTextField IdField = null;
+	private JTextField ageField = null;
+	private JTextField rqField = null;
+	private JTextField ttField = null;
+	private JTextField ttacountfield = null;
+	private JTextField shengyuField = null;
+	private JTextField zzField = null;
+	private JTextField zjField = null;
+	private JTextField cxField = null;
+	int xh1;
+	int cr1;
+	int lr1;
+	int tt1;
+	@Override
+	public void execute(JPanel panelWork) {
+		panelWork.removeAll();
+		panelWork.repaint();
+		panelWork.setLayout(new BorderLayout());	
+		JTabbedPane tabbedPane = new JTabbedPane();	
+		JPanel body = new JPanel();
+		body.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.BOTH;
+		JLabel Label = new JLabel("日销售界面");
+		Font font11 = new Font("日销售界面:", Font.BOLD, 18);
+		Label.setFont(font11);
+		body.add(Label,gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.fill = GridBagConstraints.BOTH;
+		JLabel IdLabel = new JLabel("老人票数量：");
+		body.add(IdLabel,gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		IdField = new JTextField(10);
+		body.add(IdField,gbc);
+		
+		
+		gbc.gridx = 2;
+		gbc.gridy = 1;
+		gbc.fill = GridBagConstraints.BOTH;
+		JLabel lxLabel = new JLabel("老人票总价：");
+		body.add(lxLabel,gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 1;
+		this.comboBoxFrom = new JTextField(10);
+		body.add(comboBoxFrom, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		JLabel jgLabel = new JLabel("小孩票数量：");
+		body.add(jgLabel,gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		this.comboBoxFrom1 =new JTextField(10);
+		
+		body.add(comboBoxFrom1, gbc);
+		gbc.gridx = 2;
+		gbc.gridy = 2;
+		JLabel spLabel = new JLabel("小孩票总价");
+		body.add(spLabel,gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 2;
+		ageField = new JTextField(20);
+		body.add(ageField,gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		JLabel teacherdutyLabel = new JLabel("成人票数量：");
+		body.add(teacherdutyLabel,gbc);
+		this.rqField= new JTextField(10);
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		body.add(rqField, gbc);
+		
+		gbc.gridx = 2;
+		gbc.gridy = 3;
+		JLabel shengyuLabel = new JLabel("成人票总价：");
+		body.add(shengyuLabel,gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 3;
+		shengyuField = new JTextField(20);
+		body.add(shengyuField,gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 4;
+		JLabel ttlabel = new JLabel("团体票数量：");
+		body.add(ttlabel,gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 4;
+		this.ttField= new JTextField(10);
+		body.add(ttField,gbc);
+		gbc.gridx = 2;
+		gbc.gridy = 4;
+		JLabel ttacountLabel = new JLabel("团体票总价：");
+		body.add(ttacountLabel,gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 4;
+		ttacountfield = new JTextField(20);
+		body.add(ttacountfield,gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 5;
+		JLabel zzlable = new JLabel("总票数：");
+		body.add(zzlable,gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 5;
+		this.zzField= new JTextField(10);
+		body.add(zzField,gbc);
+		gbc.gridx = 2;
+		gbc.gridy = 5;
+		JLabel zjacountLabel = new JLabel("总价");
+		body.add(zjacountLabel,gbc);
+		gbc.gridx = 3;
+		gbc.gridy = 5;
+		zjField = new JTextField(20);
+		body.add(zjField,gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 6;
+		JButton b1 = new JButton("确定");
+		body.add(b1,gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 6;
+		cxField= new JTextField(10);
+		body.add(cxField,gbc);
+		b1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				shoupiaoDAO dao = new shoupiaoDAOImpl();
+				shoupiaoDAO dao1 = new shoupiaoDAOImpl();
+				shoupiaoDAO dao2 = new shoupiaoDAOImpl();
+				shoupiaoDAO dao3 = new shoupiaoDAOImpl();
+				//System.out.println("aaa"+cxField.getText());
+				//ri = "2019-01-01";
+				String xioahi = "小孩票"; 
+				String cr = "成人票";
+				String lr = "老年票"; 
+				String tt = "团体票"; 
+				int xh1 = dao.findcount(cxField.getText(), xioahi);
+				int cr1 = dao1.findcount(cxField.getText(), cr);
+				int lr1 = dao2.findcount(cxField.getText(), lr);
+				int tt1 = dao3.findcount(cxField.getText(), tt);
+				IdField.setText(String.valueOf(lr1));
+				comboBoxFrom1.setText(String.valueOf(xh1));
+				rqField.setText(String.valueOf(cr1));
+				ttField.setText(String.valueOf(tt1));
+				zzField.setText(Integer.toString(xh1+cr1+lr1+tt1));
+				ageField.setText((Integer.toString(xh1*20)));
+				comboBoxFrom.setText((Integer.toString(lr1*50)));
+				shengyuField.setText((Integer.toString(cr1*80)));
+				ttacountfield.setText((Integer.toString(tt1*120)));
+				zjField.setText(Integer.toString((xh1*20)+(lr1*50)+(cr1*80)+(tt1*120)));
+				}
+			});
+		body.repaint();
+		tabbedPane.addTab("", body);
+		panelWork.add(tabbedPane,BorderLayout.CENTER);
+	}
+
+
+}
+
+
+
